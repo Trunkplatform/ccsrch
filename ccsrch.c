@@ -80,6 +80,7 @@ static int    mask_card_number     = 0;
 static int    limit_ascii          = 0;
 static int    ignore_count         = 0;
 static int    wrap                 = 0;
+static int    return_code          = 0;
 
 static void initialize_buffer()
 {
@@ -218,6 +219,7 @@ static void print_result(const char *cardname, int cardlen, long byte_offset)
     printf("%s\n", buf);
   }
 
+  return_code=1;  // we have a hit...
   total_count++;
   file_hit_count++;
 }
@@ -745,7 +747,7 @@ static void cleanup_shtuff()
     free(ignore);
   if (logfilefd != NULL)
     fclose(logfilefd);
-  exit(0);
+  exit(return_code);
 }
 
 static void signal_proc()
@@ -1008,5 +1010,6 @@ int main(int argc, char *argv[])
   }
   free(inbuf);
   cleanup_shtuff();
-  return 0;
+
+  return return_code;
 }
